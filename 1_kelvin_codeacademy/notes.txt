@@ -1,0 +1,1 @@
+With our knowledge of JavaScript, let’s convert Kelvin to Celsius, then to Fahrenheit.
