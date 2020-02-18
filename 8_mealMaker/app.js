@@ -1,72 +1,72 @@
 const menu = {
   
-  _courses: {
+  _courses:{
     appetizers:[],
     mains:[],
     desserts:[],
   },
-  
-  get appetizers(){return(this._courses.appetizers)},
-  get mains(){return(this._courses.mains)},
-  get desserts(){return(this._courses.desserts)}, 
-  
-  set appetizers(info){this._courses.appetizers = info},
-  set mains(info){this._courses.mains = info},
-  set desserts(info){this._courses.desserts = info},
-  
-  // Can't you just return(_courses)? Is it best practice to utilized getter methods?
+  get appetizers(){
+    return this._courses.appetizers;
+  },
+  get mains(){
+    return this._courses.mains;
+  },
+  get desserts(){
+    return this._courses.desserts;
+  },
+  set appetizers(appetizers){
+    return this._courses.appetizers = appetizers;
+  },
+  set mains(mains){
+    return this._courses.mains = mains;
+  },
+  set desserts(desserts){
+    return this._courses.desserts = desserts;
+  }, 
   get courses(){
-    return {
-      appetizers: this.appetizers,
-      mains: this.mains,
-      desserts: this.desserts
-    }
+    return this._courses;
   },
   addDishToCourse(courseName, dishName, dishPrice){
     const dish = {
-      name: dishName,
-      price: dishPrice
+      name : dishName,
+      price : dishPrice
     }
-    return this._courses[courseName].push(dish); // I don't understand why this needs to be returned here
+    this._courses[courseName].push(dish);
   },
   getRandomDishFromCourse(courseName){
-    const dishes = this._courses[courseName];
-    const index = Math.floor(Math.random() * dishes.length);
-    return dishes[index];
+    const dish = this._courses[courseName];
+    const index = Math.floor(Math.random() * dish.length);
+    return dish[index];
   },
   generateRandomMeal(){
-    let appetizers = this.getRandomDishFromCourse('appetizers');
-    let mains = this.getRandomDishFromCourse('mains');
-    let desserts = this.getRandomDishFromCourse('desserts');
+    const appetizer = this.getRandomDishFromCourse('appetizers');
+    const main = this.getRandomDishFromCourse('mains');
+    const dessert = this.getRandomDishFromCourse('desserts');
     
-    //Calculates the total price
-    const totalPrice = appetizers.price + mains.price + desserts.price; 
-    return `${appetizers.name}, ${mains.name}, ${desserts.name} = \$${totalPrice}`;
-  }  
-};
+    // total price calc
+    const total = appetizer.price +  main.price + dessert.price;
+    return `${appetizer.name}, ${main.name}, ${dessert.name} = \$${total}`;
+  }
+}
 
 
-// ******************************************** MAIN
+menu.addDishToCourse('appetizers','cheesy fries', 2.00);
+menu.addDishToCourse('appetizers','onion rings', 3.00);
+menu.addDishToCourse('mains','tacos', 3.00);
+menu.addDishToCourse('mains','ramen', 5.00);
+menu.addDishToCourse('desserts','mochi', 2.50);
+menu.addDishToCourse('desserts','cake', 2.00);
 
-// add appetizers
-menu.addDishToCourse('appetizers','cococnut shrimp',7.00);
-menu.addDishToCourse('appetizers','bruschetta',5.50);
-menu.addDishToCourse('appetizers','cheesy fries',4.00);
 
-// add mains
-menu.addDishToCourse('mains','tacos',7.00);
-menu.addDishToCourse('mains','ramen',5.50);
-menu.addDishToCourse('mains','sushi',4.00);
-menu.addDishToCourse('mains','pizza',4.00);
 
-// add desserts
-menu.addDishToCourse('desserts','mochi',7.00);
-menu.addDishToCourse('desserts','thai ice cream',5.50);
-menu.addDishToCourse('desserts','chocolate truffles',4.00);
-menu.addDishToCourse('desserts','fried donut',4.00);
 
-// generate a meal
-const meal = menu.generateRandomMeal();
-console.log(meal);
+console.log(menu.generateRandomMeal());
+
+
+
+
+
+
+
 
 
