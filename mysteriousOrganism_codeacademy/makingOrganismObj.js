@@ -13,57 +13,77 @@ const mockUpStrand = () => {
   return newStrand;
 }
 
-// compareDNA
-const compareDNA = (pAequor) =>{
-  
-}
-
-//*********************************************
-
-
-const int = 1; // number of organisms to create
-const organismHolder = [];
-
 // factory function
-const pAequorFactory = int =>{
-  
-  for(let i = 0; i < int; i++){
-    
-    // organism obj
-    const organism = {
-      specimenNum: i,
-      dna: mockUpStrand(),
-      
-      // mutates a healthy dna strand
-      mutate(){
-        const index = Math.floor(Math.random() * 15);
-        const oriBase = this.dna[index]; // original base
-        const mutBase = ''; // mutated base
+const pAequorFactory= (int, dna) =>{
 
-        do { // make sure bases aren't eq
-          mutBase = returnRandBase();
-        } while (oriBase === mutBase);
-        
-        if (oriBase !== mutBase) {
-          dna[index] = mutBase;
-        }
-        return(dna); // returns mutated dna
+  const organism = {
+    specimenNum: int,
+    dna: dna,
+  
+    // mutates a healthy dna strand
+    mutate(){
+      const index = Math.floor(Math.random() * 15);
+      const oriBase = this.dna[index]; // original base
+      let mutBase = ''; // mutated base
+      
+      do { // make sure bases aren't the same
+        mutBase = returnRandBase();
+      } while (oriBase === mutBase);
+
+      if (oriBase !== mutBase) {
+        this.dna[index] = mutBase;
       }
-    } // obj end
+      return(this.dna);
+    },
     
-    organismHolder.push(organism); // stores non-mutated dna here
+    // compareDNA
+    compareDNA(pAequor){
+      
+      let count = 0;
+      for(let i = 0; i < 15; i++){
+        if(this.dna[i] !== pAequor.dna[i]){
+          count++;
+        }
+      }
+      
+      if (count === 0){
+        console.log(`${this.specimenNum} and ${pAequor.specimenNum} have 100% DNA in common.`);
+      }else{
+        const percent = Math.floor(((15-count) / 15) * 100);
+        console.log(`${this.specimenNum} and ${pAequor.specimenNum} have ${percent}% DNA in common.`);
+      }
+    },
+    
+    // calculate GC content
+    willLikelySurvive(){
+      let count = 0;
+      for(let i = 0; i < 15; i++){
+        if(dna[i] === 'C' || dna[i] === 'G'){count++;}
+      }
+      if((count/15)>=.6){return(true)}
+      if((count/15)<.6){return(false)}
+    }
+  } // obj end
+  return(organism);
+}
+  
+    
+  
+
+//******************************************
+const organismHolder = [];
+let i = 0;
+while(i<30){
+  const newOrganism = pAequorFactory(i,mockUpStrand());
+  if(newOrganism === true){
+    organismHolder.push(newOrganism);
+    i++;
   }
 }
-  
-    
-  
 
-//****************************************** let's run some stuff
-pAequorFactory(int);
-console.log(organismHolder[0].dna);
 
-// this is so crazy. It's literally what I used to do for a living, but oop. It's blowing my mind. I'm learning so much.
-
-// Need to double check that the mutate function is working like it's supposed to...and make sure that splice isn't necessary
+// double checking to make sure only 'true' organisms go into the array
+organismHolder[0].compareDNA(organismHolder[1]);
+console.log(organismHolder[29].willLikelySurvive());
 
 
